@@ -1,11 +1,12 @@
 // Includes
 const express = require("express");
 const decoder = require("body-parser");
+const dotenv = require("dotenv");
 
 // App configurations
 const app = express();
 const port = process.env.PORT || 3001;
-
+dotenv.config();
 // Router Importing
 const userRouter = require("./router/user");
 const rootRouter = require("./router/root");
