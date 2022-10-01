@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const connectDB = require("../database/dbconn");
 const UserModel = require("../models/user");
-
+const func = require("../assets/verifier");
 connectDB();
 
 router.get("/", (req, res) => {
@@ -53,6 +53,7 @@ router.post("/register", (req, res) => {
 });
 // Sign In
 router.post("/login", (req, res) => {
+  
   UserModel.find({ email: req.body.email })
     .exec()
     .then((user) => {
@@ -90,15 +91,6 @@ router.post("/login", (req, res) => {
     });
 });
 // Delete User
-const func = (req, res, next) => {
-  try {
-    const decoded = jwt.verify(req.body.token, process.env.THE_SECRET);
-    req.UserData = decoded;
-    next();
-  } catch (err) {
-    res.status(409).json({ error: err });
-  }
-};
 router.delete("/delete", func, (req, res) => {
   UserModel.deleteOne({ _id: req.body.id })
     .exec()
