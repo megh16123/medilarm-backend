@@ -27,6 +27,11 @@ router.post("/add", (req, res) => {
       res.status(500).json({ error: err });
     });
 });
+router.post("/getall",(req,res)=>{
+  dailyreminderModel.find({user:req.body.uid}).then((data)=>{
+    res.json(data);
+  });
+  });
 router.post("/edit", (req, res) => {
   dailyreminderModel
     .findOneAndUpdate({ _id: req.body.medid }, { $set: req.body })

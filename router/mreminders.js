@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const monthlyreminderModel = require("../models/monthlyreminder");
+
 router.post("/", (req, res) => {
   res.send("hello");
+});
+router.post("/getall",(req,res)=>{
+monthlyreminderModel.find({user:req.body.uid}).then((data)=>{
+  res.json(data);
+});
 });
 router.post("/add", (req, res) => {
   const mreminder = new monthlyreminderModel({
