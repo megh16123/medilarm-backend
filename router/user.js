@@ -31,8 +31,8 @@ router.post("/register", (req, res) => {
               _id: mongoose.Types.ObjectId(),
               name: req.body.name,
               email: req.body.email,
-              phoneNo: req.body.phoneNo,
               password: hash,
+              phoneNo: req.body.phoneNo,
               pharmacistContact: req.body.pharmacistContact,
               thirdParty: req.body.thirdParty,
             });
@@ -53,7 +53,6 @@ router.post("/register", (req, res) => {
 });
 // Sign In
 router.post("/login", (req, res) => {
-  
   UserModel.find({ email: req.body.email })
     .exec()
     .then((user) => {
