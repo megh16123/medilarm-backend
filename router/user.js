@@ -100,4 +100,24 @@ router.delete("/delete", func, (req, res) => {
       res.status(500).json({ error: err });
     });
 });
+
+router.post("/getdata", func, (req, res) => {
+  UserModel.getOne({ email: req.body.email })
+    .exec()
+    .then((user) => {
+      res.status(200).json({ user: user });
+    });
+});
+// Update User
+router.post("/update", func, (req, res) => {
+  UserModel.findOneAndUpdate({ email: req.body.email }, { $set: req.body })
+    .exec()
+    .then((user) => {
+      res.status(200).json({ message: "Updated Successfully", user });
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err });
+    });
+});
+
 module.exports = router;
