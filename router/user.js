@@ -80,7 +80,7 @@ router.post("/login", (req, res) => {
           );
           return res
             .status(200)
-            .json({ message: "Auth Success", token: token });
+            .json({ message: "Auth Success", token: token, uid: user[0]._id });
         }
         res.status(409).json({ message: "Auth Failed" });
       });

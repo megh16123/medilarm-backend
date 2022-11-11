@@ -17,16 +17,15 @@ const dailyreminderSchema = new mongoose.Schema({
         min: 0,
         max: 59,
       },
-      seconds: {
-        type: Number,
+      AMPM: {
+        type: String,
         required: true,
-        min: 0,
-        max: 59,
       },
     },
   ],
   quantity: { type: "Number" },
   unit: { type: "string" },
+  taken:{type: "boolean", default: false}
 });
 
 module.exports = mongoose.model("dailyreminder", dailyreminderSchema);

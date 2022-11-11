@@ -6,15 +6,9 @@ router.post("/", (req, res) => {
 });
 router.post("/add", (req, res) => {
   const reminder = new dailyreminderModel({
-    user: req.body.id,
+    user: req.UserData.Id,
     nameofmedicine: req.body.nameofmedicine,
-    time: [
-      {
-        hours: req.body.hours,
-        minutes: req.body.minutes,
-        seconds: req.body.seconds,
-      },
-    ],
+    time: req.body.time,
     quantity: req.body.quantity,
     unit: req.body.unit,
   });
@@ -24,14 +18,26 @@ router.post("/add", (req, res) => {
       res.status(200).json({ message: "Success" });
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({ error: err });
     });
 });
-router.post("/getall",(req,res)=>{
-  dailyreminderModel.find({user:req.body.uid}).then((data)=>{
+router.post("/getall", (req, res) => {
+  dailyreminderModel.find({ user: req.UserData.Id }).then((data) => {
     res.json(data);
   });
-  });
+});
+router.post("/take", (req, res) => {
+  dailyreminderModel
+    .findOne({ _id: req.body.id })
+    .exec()
+    .then((reminder) => {
+      reminder.taken = !reminder.taken;
+      reminder.save().then(() => {
+        res.status(200).json({ message: "Success" });
+      });
+    });
+});
 router.post("/edit", (req, res) => {
   dailyreminderModel
     .findOneAndUpdate({ _id: req.body.medid }, { $set: req.body })
@@ -45,7 +51,7 @@ router.post("/edit", (req, res) => {
 });
 router.post("/delete", (req, res) => {
   dailyreminderModel
-    .findByIdAndDelete({ _id: req.body.medid })
+    .findByIdAndDelete({ _id: req.body.id })
     .then(() => {
       res.status(200).json({ message: "Reminder Deleted" });
     })
