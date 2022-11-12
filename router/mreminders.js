@@ -6,13 +6,13 @@ router.post("/", (req, res) => {
   res.send("hello");
 });
 router.post("/getall",(req,res)=>{
-monthlyreminderModel.find({user:req.body.uid}).then((data)=>{
+monthlyreminderModel.find({user:req.UserData.Id}).then((data)=>{
   res.json(data);
 });
 });
 router.post("/add", (req, res) => {
   const mreminder = new monthlyreminderModel({
-    user: req.body.id,
+    user: req.UserData.Id,
     nameofmedicine: req.body.nameofmedicine,
     date: req.body.date,
     quantity: req.body.quantity,
@@ -29,7 +29,7 @@ router.post("/add", (req, res) => {
 });
 router.post("/edit", (req, res) => {
   monthlyreminderModel
-    .findOneAndUpdate({ _id: req.body.medid }, { $set: req.body })
+    .findOneAndUpdate({ _id: req.body.id }, { $set: req.body })
     .exec()
     .then(() => {
       res.status(200).json({ message: "Reminder Updated" });
@@ -40,7 +40,7 @@ router.post("/edit", (req, res) => {
 });
 router.post("/delete", (req, res) => {
   monthlyreminderModel
-    .findByIdAndDelete({ _id: req.body.medid })
+    .findByIdAndDelete({ _id: req.body.id })
     .then(() => {
       res.status(200).json({ message: "Reminder Deleted" });
     })
